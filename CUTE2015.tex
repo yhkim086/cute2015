@@ -27,6 +27,8 @@
 %
 
 \author{Yong-hwan Kim\inst{}
+\and Hyun-kyo Lim\inst{}
+\and Kyoung-han Kim\inst{}
 \and Youn-Hee Han\inst{}}
 %
 \authorrunning{Yong-hwan Kim et al.}
@@ -35,7 +37,7 @@
 % the affiliations are given next; don't give your e-mail address
 % unless you accept that it will be published
 \institute{Advanced Technology Research Center \\ Korea University of Technology and Education, Korea \\
-\email{\{cherish, yhhan\}@koreatech.ac.kr}}
+\email{\{cherish, glenn89, goslim, yhhan\}@koreatech.ac.kr}}
 
 %
 % NB: a more complex sample for affiliations and the mapping to the
@@ -57,6 +59,7 @@ As smart phone has rapidly proliferated over the past few years, mobile data tra
 
 
 \section{Introduction}
+
 Due to the increasing popularity of smart-phones and other mobile devices, mobile data traffic is expected to continuously increase with an annual rate above $100\%$ \cite{ref1}, \cite{ref2}. Accordingly, LTE operators are in urgent need of means to cope with such increase in data volumes. The evolution of mobile network architectures toward flat architectures is being considered as a key solution to cope with the explosion of mobile data traffic \cite{ref3}-\cite{ref5}. For this, IETF Distributed Mobility Management (DMM) working group is trying to make standardizations of IP mobility anchors at an access network level \cite{ref6,ref7}. 
 
 As 3GPP evolves to the Evolved Packet Core (EPC) network, the network hierarchy is also being flattened. In the hierarchy, the number of LTE/EPC network elements decreases, where the main elements in the data plane are Packet Data Network Gateway (P-GW), Serving Gateway (S-GW), and Evolved Node B (eNodeB). The number of hierarchy levels is reduced in the EPC network compared with the GPRS/UMTS network. In later deployment, P-GW and S-GW are expected to be co-located in the same physical element, thus the number of different network elements will be further reduced. In this hierarchy, P-GW provides access to Packet Data Network (PDN) by assigning an IP address to User Equipments (UEs) and serves as the mobility anchor point. UEs do not change their mobility anchor points if they remain attached to the same operator's access network. So, all data traffic for an UE is routed over P-GW and thus P-GW is needed to handle it.
