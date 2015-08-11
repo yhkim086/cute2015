@@ -125,7 +125,6 @@ sympy-plots-for-*.tex/
 *.bak
 *.sav
 
-*.pdf
 *.xlsx
 *.ps
 *.~vsd
