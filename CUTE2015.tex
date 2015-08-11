@@ -88,9 +88,9 @@ The virtually control plane consists of much functions supported by Mobility Man
 \begin{figure}[t] 
 \centering 
 \subfigure[Movement from P-EGW1 to P-GEW2]{
-	\includegraphics[width=0.48\linewidth, trim=0cm 0cm 0cm 0cm]{./figures/fig2(a).pdf}}
+	\includegraphics[width=0.47\linewidth, trim=0cm 0cm 0cm 0cm]{./figures/fig2(a).pdf}}
 \subfigure[Movement from P-EGW2 to P-GEW3]{
-	\includegraphics[width=0.48\linewidth, trim=0cm 0cm 0cm 0cm]{./figures/fig2(b).pdf}}
+	\includegraphics[width=0.50\linewidth, trim=0cm 0cm 0cm 0cm]{./figures/fig2(b).pdf}}
 \caption{Examples for proposed SDMM}
 \label{fig:2}
 \end{figure}
@@ -107,7 +107,7 @@ A location information of UE becomes $<$UE ID, UE IP Address, Anchor P-EGW ID, A
 
 Examples of our solution are shown in Fig. \ref{fig:2}. In Fig. \ref{fig:2} (a), an UE initially attaches to P-EGW1 and starts to communicate with CN1 located in PDN. As explained previously, P-EGW1 becomes the anchor P-EGW for the PDN connection for this communication. When the UE moves to P-EGW2, which becomes an access P-EGW for the PDN connection, P-EGW2 acquires the UE's information via SDN controller in the control plane during the authentication phase. And then P-EGW2 requests for routing update to the control plane. When SDN controller in the control plane receives this request, it performs a routing update to SDN switches between anchor P-EGW1 and access P-EGW2. When the routing update is finished, the session data anchored P-EGW1 is redirected to P-EGW2. When the UE moves to P-EGW3 as shown in \ref{fig:2} (b), the session data anchored P-EGW1 is redirected to P-EGW3 though the same procedures. Meanwhile, when the UE creates a new session to CN2 located in PDN, P-EGW3 is the anchor P-EGW for the new session using a new IP address.
 
-The data transferred after the movement of an UE in the proposed SDMM is routed through sub-optimal path, since the data should be redirected by an anchor P-EGW. However, the proposed SDMM can reduce the amount of signal messages related with routing update and the handover latency compared with the existing routing-based DMM approaches \cite{ref11,ref12}. Furthermore, it can remove the cost related with tunneling, while the tunneling cost is imposed on the existing host/network based DMM approaches \cite{!!!}.
+The data transferred after the movement of an UE in the proposed SDMM is routed through sub-optimal path, since the data should be redirected by an anchor P-EGW. However, the proposed SDMM can reduce the amount of signal messages related with routing update and the handover latency compared with the existing routing-based DMM approaches \cite{ref12}. Furthermore, it can remove the cost related with tunneling, while the tunneling cost is imposed on the existing host/network based DMM approaches \cite{ref7}.
 
 An IP address assigned for a PDN connection managed by an LTE/EPC network operator can be made up based on a pre-defined prefix information. Therefore, if the IP address has such a pre-defined prefix, the data communication can be judged to be the one of inner traffic exchanged between UEs in the operator's network. In this case, the route for this data communication can be optimized by routing updates to SDN switches between the P-EGWs associated to such UEs.
 
@@ -146,11 +146,11 @@ The proposed solution will give LTE network operator increased scalability, flex
 
 \bibitem{ref2} Cisco Visual Networking Index: Global Mobile Data Traffic Forecast Update,  Cisco White Paper, 2011-2016, Feb. 2010.
 
-\bibitem{ref5} H A. Chan, H. Yokota, J. Xie, P. Seite, D. Liu, "Distributed and Dynamic Mobility Management in Mobile Internet: Current Approaches and Issues," Journal of Communications, Vol 6, No 1 (2011), 4-15, Feb. 2011
+\bibitem{ref5} H. A. Chan, H. Yokota, J. Xie, P. Seite, D. Liu, "Distributed and Dynamic Mobility Management in Mobile Internet: Current Approaches and Issues," Journal of Communications, Vol 6, No 1, pp. 4-15, Feb. 2011
 
-\bibitem{ref6} H. Chan, et al., "Requirement of Distributed Mobility Management," IETF Internet Draft, draft-chan-dm mrequirements-00, March 2012.
+\bibitem{ref6} D. Liu, et al., "Distributed Mobility Management: Current Practices and Gap Analysis," IETF RFC 7429, Jan. 2015.
 
-\bibitem{ref7} B. Sarikaya, "Distributed Mobile IPv6," IETF Internet Draft, draftsarikaya-dmm-dmipv6-00, Feb 2012.
+\bibitem{ref7} C. J. Bernardos, "PMIPv6-based distributed anchoring," IETF Internet Draft, draft-bernardos-dmm-distributed-anchoring-05, March 2015.
 
 \bibitem{ref8} Y. Wang and J. Bi, "A solution for IP mobility support in software defined networks," In Proc. of 23rd ICCCN, 2014.
 
@@ -158,9 +158,7 @@ The proposed solution will give LTE network operator increased scalability, flex
 
 \bibitem{ref9} P. Seite and P. Bertin, "Distributed Mobility Anchoring," IETF Internet Draft, draft-seitedmm-dma-00, Feb. 2012.
 
-\bibitem{ref10} T. Melia et al., ¡°Logical Interface Support for multi-mode IP Hosts,¡± IETF Internet draft, draft-ietf-netext-logical-interface-support-10 (work in progress), Sep. 2014
-
-\bibitem{ref11} P. McCann, "Authentication and Mobility Management in A Flat Architecture," IETF Internet-Draft, draft-mccann-dmm-flatarch-00 (work in progress), Mar. 2012.
+\bibitem{ref10} T. Melia et al., "Logical Interface Support for multi-mode IP Hosts," IETF Internet draft, draft-ietf-netext-logical-interface-support-10 (work in progress), Sep. 2014
 
 \bibitem{ref12} H. Chan and K. Pentikousis, "Enhanced Mobility Anchoring," IETF Internet draft, draft-chan-dmm-enhanced-mobility-anchoring-00 (work in progress), Jul. 2014.
 
