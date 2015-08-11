@@ -2,10 +2,8 @@
 
 \usepackage{amssymb}
 \setcounter{tocdepth}{3}
-\usepackage{graphicx}
 \usepackage{subfigure}
-\usepackage{epsfig}
-
+\usepackage{graphicx}
 \usepackage{url}
 \urldef{\mailsa}\path|{cherish, yhhan}@koreatech.ac.kr|
 \newcommand{\keywords}[1]{\par\addvspace\baselineskip
@@ -52,28 +50,26 @@
 
 
 \begin{abstract}
-As smart phone has rapidly proliferated over the past few years, it leads to new trend in data communication. Mobile data traffic is expected to continuously increase with an annual rate above $100\%$. Accordingly, LTE operators are in urgent need of means to cope with such increase in data volumes. The evolution of mobile network architectures toward flat architectures is being considered as a key solution to cope with the explosion of mobile data traffic. In this paper, we propose a new SDN-based distributed mobility management to solve these problems, which is proper to a new LTE/EPC network architecture supporting distributed P-GWs and virtually centralized control plane. For enhancing network performance, we also propose a route optimization strategy for internal traffic. The performance of the proposed solution is compared with the conventional LTE/EPC network in terms of the P-GW/PEGW's data processing volume per unit time and the number of valid data sessions. The comparison results showed that the proposed solution can be a more efficient way to support the scalability of LTE/EPC core network.
+As smart phone has rapidly proliferated over the past few years, mobile data traffic is expected to increase largely. Accordingly, LTE operators endeavor to cope with such increase in data volumes. The evolution of mobile network architectures toward flat architectures is being considered as a key solution to manage the explosion of mobile data traffic. To solve such problems, we propose a new SDN-based distributed mobility management supporting distributed P-GWs and virtually-centralized control plane. For enhancing network performance more, we also propose a route optimization strategy for internal traffic exchanged between LTE users. The proposed solutions' performance are compared with the conventional LTE/EPC network's scheme in terms of the P-GW data processing volume per unit time and the number of valid data sessions. The comparison results showed that the proposed solution can be an efficient way to enhance the scalability of LTE/EPC core network.
 
-\keywords{Network Architecture, Distributed Mobility Management, Dynamic Mobility, LTE/EPC, SDN}
+\keywords{Distributed Mobility Management, Dynamic Mobility, LTE/EPC, SDN}
 \end{abstract}
 
 
 \section{Introduction}
-Due to the increasing popularity of smart-phones and other mobile devices, mobile data traffic is expected to continuously increase with an annual rate above $100\%$ \cite{ref1}, \cite{ref2}. Accordingly, LTE operators are in urgent need of means to cope with such increase in data volumes. The evolution of mobile network architectures toward flat architectures is being considered as a key solution to cope with the explosion of mobile data traffic \cite{ref3}-\cite{ref5}. For this, IETF¡¯s Distributed Mobility Management (DMM) working group is trying to make standardizations of IP mobility anchors at an access network level \cite{ref6}-\cite{ref9}. However, they try to standardize IP mobility solutions in general mobile network not specific network system like LTE/EPC network. Thus, the mobility support is still an ongoing research topic as there is still a strong need for a common mobility support solution for the Internet, especially LTE/EPC network.
+Due to the increasing popularity of smart-phones and other mobile devices, mobile data traffic is expected to continuously increase with an annual rate above $100\%$ \cite{ref1}, \cite{ref2}. Accordingly, LTE operators are in urgent need of means to cope with such increase in data volumes. The evolution of mobile network architectures toward flat architectures is being considered as a key solution to cope with the explosion of mobile data traffic \cite{ref3}-\cite{ref5}. For this, IETF Distributed Mobility Management (DMM) working group is trying to make standardizations of IP mobility anchors at an access network level \cite{ref6,ref7}. 
 
-As 3GPP evolves to the Evolved Packet Core (EPC) network, the network hierarchy is also being flattened. In the hierarchy, the number of LTE/EPC network elements decreases, where the main elements in the data plane are Packet Data Network Gateway (P-GW), Serving Gateway (S-GW), and Evolved Node B (eNodeB). The number of hierarchy levels is reduced in the EPC network compared with the GPRS/UMTS network. In later deployment, the P-GW and S-GW are expected to be co-located in the same physical element, thus further reducing the number of different network elements. In this hierarchy, the P-GW provides access to PDN by assigning an IP address to the UE. It serves as the mobility anchor point for 3GPP and non-3GPP handover. UEs do not change their mobility anchor points (P-GW) if they remain attached to the same operator¡¯s access network. So, all data traffic for an UE is routed over the P-GW and thus the P-GW is needed to handle it.
+As 3GPP evolves to the Evolved Packet Core (EPC) network, the network hierarchy is also being flattened. In the hierarchy, the number of LTE/EPC network elements decreases, where the main elements in the data plane are Packet Data Network Gateway (P-GW), Serving Gateway (S-GW), and Evolved Node B (eNodeB). The number of hierarchy levels is reduced in the EPC network compared with the GPRS/UMTS network. In later deployment, P-GW and S-GW are expected to be co-located in the same physical element, thus the number of different network elements will be further reduced. In this hierarchy, P-GW provides access to Packet Data Network (PDN) by assigning an IP address to User Equipments (UEs) and serves as the mobility anchor point. UEs do not change their mobility anchor points if they remain attached to the same operator's access network. So, all data traffic for an UE is routed over P-GW and thus P-GW is needed to handle it.
 
-DMM for distributing mobility anchors like as P-GW and the introduction of the SDN and NFV concept for virtually centralizing control plane in LTE/EPC network will lead to the deployment of flatter systems in which mobility anchor points are placed closer to the UEs. It is therefore expected that the change of UE's mobility anchors upon handover will happen far more often. DMM will have to provide the network with the possibility to keep ongoing sessions active also upon handovers that require mobility anchor change. Furthermore, a virtually centralized control plane allows for more flexibility and a higher degree of freedom by having the S-/P-GWs data-plane deployed on distributed P-GW.
+As another trends in mobile networks, Software-Defined Networking (SDN) and Network Functions Virtualization (NFV) are being actively adopted by mobile operators. SDN and NFV can enable resource and service orchestration with dynamic provisioning by deploying and utilizing virtually-centralized control plane. In parallel with DMM technology, SDN and NFV will lead to the deployment of more flatter systems in which mobility anchor points can be placed closer to the UEs and the local breakout/traffic offload can be facilitated \cite{ref8}. Furthermore, a virtually centralized control plane allows for more flexibility by having the S-/P-GWs data-plane deployed in a distributed manner \cite{ref8-1}. It is however expected that the change of UE's mobility anchors upon handover will happen far more often due to high number of mobility anchors deployed at access networks. So, DMM should efficiently keep ongoing sessions active in case of handovers that require mobility anchor change. 
 
-In this paper, we propose a new distributed LTE/EPC network architecture based on SDN and NFV supporting distributed P-GWs. It is designed as three requirements about how to redesign LTE/EPC network: 1) Distributing data plane 2) Virtually centralizing control plane 3) Separation of the control and data planes. In order to distribute data plane, multiple distributed P-GWs are deployed in different areas of the network. In order to satisfy other requirements, SDN and NFV were adapted to not only EPC networks but also the edge of the network. Next, the distributed mobility management, called SDN-based distributed mobility management, which is proper to the proposed architecture, is proposed. We also propose the route optimization in internal traffic for enhancing network performance.
-
-For the performance evaluation, the proposed solution was implemented on the NS-3 LENA. The performance of the proposed solution was compared with the conventional LTE/EPC network system in terms of the P-GW/PEGW¡¯s data processing volume per unit time and the number of valid data sessions. The comparison results showed that the proposed LTE/EPC architecture and their DMM solution can be a more efficient way to support the scalability of LTE/EPC core network.
+In this paper, we propose a new distributed LTE/EPC network architecture based on SDN and NFV supporting distributed P-GWs. It is designed based on the following requirements: 1) Distributing P-GWs closer to the UEs, 2) Virtually centralizing control plane, 3) Separation of the control and data planes, and 4) Efficient mobility management. We also propose the route optimization for internal traffic exchanged by LTE/EPC UEs to enhance network performance. We have implemented the proposed solution on NS3-LENA simulation environment, \cite{ref13,ref13-1}. The proposed solution's performance is compared with the conventional LTE/EPC network system's scheme in terms of the P-GW data processing volume and the number of valid data sessions. The comparison results show that the proposed LTE/EPC architecture and DMM solution can be a more efficient way to support the scalability of LTE/EPC core network.
 
 The rest of this paper is organized as follows. Section 2 proposes a SDN-based DMM approach in LTE/EPC. Section 3 investigates the performance of our proposal by simulations, and Section 4 finally concludes this paper.
 
 \begin{figure}[t]
 \begin{center}
-\includegraphics[width=9cm]{figures/fig1.eps}
+\includegraphics[width=9cm]{figures/fig1.pdf}
 \end{center}
 \caption{Reference model for a SDN-based DMM architecture in LTE/EPC.}
 \label{fig:f1}
@@ -82,7 +78,7 @@ The rest of this paper is organized as follows. Section 2 proposes a SDN-based D
 
 \section{Proposed SDN-based DMM approach}
 \subsection{Proposed SDN-based DMM architecture}
-Fig.\ref{fig:f1} shows the reference model for the proposed SDN-based DMM (SDMM) architecture in LTE/EPC. It is designed as three requirements about how to redesign LTE/EPC network:
+Fig.\ref{fig:f1} shows the reference model for our SDN-based DMM (SDMM) architecture in LTE/EPC. It is designed as three requirements about how to redesign LTE/EPC network:
 
     1) \textit{Distributing data plane:} Instead of employing a single centralized infrastructure based on P-GW, multiple distributed components can be deployed in different areas of the network. A new network element, named packet data network edge gateway (P-EGW), is so similar to the existing P-GW in term of the functionalities and the roles. However, P-EGWs will be deployed near to the radio area network (RAN), so that their location will be somewhere between eNB and S-GW. P-EGW has also the role as SDN switch to communicate with SDN controller in a virtually and centralized control plane. The distributing data plane allows scalability and flexibility to network;
 
@@ -90,18 +86,14 @@ Fig.\ref{fig:f1} shows the reference model for the proposed SDN-based DMM (SDMM)
 
     3) \textit{Separation of the control and data planes:} In order to totally separate the LTE/EPC network¡¯s data and control planes, SDN is adapted to not only EPC networks but also the edge of the network. In other words, the functions of whole network¡¯s entities including eNodeB, distributed P-GW, MME, and the others should be separated into the data and control planes and then should be managed by SDN technology. The separation of the control and data planes allows sophisticated traffic management to be driven by software, rather than purely by hardware routers.
 
-\begin{figure}[t]
-    \centering
-    \subfigure[Movement from P-EGW $\#1$ to P-GEW $\#2$] {
-        \epsfig {
-            file=figures/fig2(a).eps,
-            width=5.8cm } }
-    \subfigure[Movement from P-EGW $\#2$ to P-GEW $\#3$] {
-        \epsfig {
-            file=figures/fig2(b).eps,
-            width=5.8cm } }
-    \caption{An example for proposed SDMM.}
-    \label{fig:2}
+\begin{figure}[t] 
+\centering 
+\subfigure[Movement from P-EGW $\#1$ to P-GEW $\#2$]{
+	\includegraphics[width=0.45\linewidth, trim=0cm 0cm 0cm 0cm]{./figures/fig2(a).pdf}}
+\subfigure[Movement from P-EGW $\#2$ to P-GEW $\#3$]{
+	\includegraphics[width=0.45\linewidth, trim=0cm 0cm 0cm 0cm]{./figures/fig2(b).pdf}}
+\caption{Examples for proposed SDMM}
+\label{fig:2}
 \end{figure}
 
 \subsection{Proposed SDN-based DMM}
@@ -127,18 +119,14 @@ In this section, we analyze the SDMM's performance compared to the one in the co
 
 The simulation area is $30 km \times 30 km$. the one P-GW, four S-GWs, and thirty-six eNBs are inter-connected in the conventional LTE/SAE network. On the other hand, twelve P-EGWs instead of P-GW and S-GWs in SDMM are deployed. They are directly connected to just three eNBs. Each wired link is a full-duplex link and provides a bandwidth of $10 Gbps$. The delay of each link was configured to be the one between $25 ms$ and $125 ms$ considering the distance among each node. The LTE wireless channel and modulation/encoding models are set to be the default models provided by NS-3.16-LENA. In the experiment, we deployed $100$ UEs randomly in the area and traffic model is a voice over IP traffic. So, UE having even IMSI sends 80 Bytes UDP data to UE having odd IMSI every 10ms (64Kbps)
 
-\begin{figure}[t]
-    \centering
-    \subfigure[Data throughput] {
-        \epsfig {
-            file=figures/fig3.eps,
-            width=5.8cm } }
-    \subfigure[The number of valid data sessions] {
-        \epsfig {
-            file=figures/fig4.eps,
-            width=5.8cm } }
-    \caption{simulation results between SDMM and convention LTE.}
-    \label{fig:3}
+\begin{figure}[t] 
+\centering 
+\subfigure[Data throughput]{
+	\includegraphics[width=0.45\linewidth, trim=0cm 0cm 0cm 0cm]{./figures/fig3.pdf}}
+\subfigure[The number of valid data sessions]{
+	\includegraphics[width=0.45\linewidth, trim=0cm 0cm 0cm 0cm]{./figures/fig4.pdf}}
+\caption{Simulation results between SDMM and conventional LTE}
+\label{fig:2}
 \end{figure}
 
 Fig. \ref{fig:3} (a) shows the P-GW and the P-EGW¡¯s data processing volume per unit time in traffic scenario. In the figure, the data processing volume of P-EGWs in all cases (SDMM, SDMM-PPC(Dynamic mobility management), SDMM-RO-PPC) is quite less than that of P-GW in the beginning of simulation due to the distributed architecture of P-EGWs. On the other hand, the total amount of data processing volume across all P-EGWs is more than the data processing volume of P-GW. It is due to the data traffic caused by routing between P-EGWs. However, as time goes by, the data processing volume of P-EGWs increases in the order of SDMM $\>$ SDMM-PPC $\>$ SDMM-RO-PPC. Especially, the one of the SDMM-RO-PPC is not nearly affected by the passing time.
@@ -171,7 +159,9 @@ The proposed solution will give LTE network operator increased scalability, flex
 
 \bibitem{ref7} B. Sarikaya, "Distributed Mobile IPv6," IETF Internet Draft, draftsarikaya-dmm-dmipv6-00, Feb 2012.
 
-\bibitem{ref8} B. Sarikaya, "Distributed Mobile IPv6," IETF Internet Draft, draftsarikaya-dmm-dmipv6-00, Feb 2012.
+\bibitem{ref8} Y. Wang and J. Bi, "A solution for IP mobility support in software defined networks," In Proc. of 23rd ICCCN, 2014.
+
+\bibitem{ref8-1} L. Valtulina, M. Karimzadeh, G. Karagiannis, G. Heijenk, and A. Pras, "Performance Evaluation of a SDN/OpenFlow-Based Distributed Mobility Management (DMM) Approach in Virtualized LTE Systems," In Proc of Globecom 2014 Workshop - Cloud Computing Systems, Networks, and Applications, 2014.
 
 \bibitem{ref9} P. Seite and P. Bertin, "Distributed Mobility Anchoring," IETF Internet Draft, draft-seitedmm-dma-00, Feb. 2012.
 
@@ -182,6 +172,8 @@ The proposed solution will give LTE network operator increased scalability, flex
 \bibitem{ref12} H. Chan and K. Pentikousis, "Enhanced Mobility Anchoring," IETF Internet draft, draft-chan-dmm-enhanced-mobility-anchoring-00 (work in progress), Jul. 2014.
 
 \bibitem{ref13} NS3 network simulator. http://www.nsnam.org/
+
+\bibitem{ref13-1} LENA Design Documentation. http://lena.cttc.es/manual/lte-design.htm
 
 \end{thebibliography}
 
